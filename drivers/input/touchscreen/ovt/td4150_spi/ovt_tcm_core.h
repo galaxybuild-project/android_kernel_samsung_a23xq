@@ -95,6 +95,7 @@
 #define MESSAGE_MARKER 0xa5
 #define MESSAGE_PADDING 0x5a
 
+#if defined(CONFIG_RSU_ALWAYS_INLINE) && !defined(MODULE)
 // from synaptics_tcm_core
 #define LOGx(func, dev, log, ...) \
 	func(dev, "%s: " log, __func__, ##__VA_ARGS__)
@@ -107,6 +108,8 @@
 #define LOGN(dev, log, ...) LOGx(dev_notice, dev, log, ##__VA_ARGS__)
 #define LOGW(dev, log, ...) LOGy(dev_warn, dev, log, ##__VA_ARGS__)
 #define LOGE(dev, log, ...) LOGy(dev_err, dev, log, ##__VA_ARGS__)
+
+#endif
 
 #define MAX_FINGER_NUM	10
 #define LOCATION_DETECT_SIZE	6
