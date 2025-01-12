@@ -1,4 +1,4 @@
- 	CLANG_VERSION=14 && echo "CLANG_VERSION=$CLANG_VERSION"
+ 	CLANG_VERSION=12.0.7 && echo "CLANG_VERSION=$CLANG_VERSION"
        export CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE_O3=y
         export PATH=$(pwd)/toolchain/clang-`echo $CLANG_VERSION`/bin:$PATH
         export CROSS_COMPILE=$(pwd)/toolchain/google/bin/aarch64-linux-android-
@@ -7,7 +7,7 @@
         export KBUILD_BUILD_HOST="galaxybuild"
         export BUILD_START=`date`
         export IS_CI=true
-        export DEFCONFIG="wonderful_defconfig"
+        export DEFCONFIG="wonderful_ksu_defconfig"
         export DEVICE="a23xq"
         export DEVICE_ID="A23 5G"
         export LLVM=1
