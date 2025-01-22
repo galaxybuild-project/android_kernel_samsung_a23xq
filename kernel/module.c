@@ -1340,23 +1340,16 @@ static int check_version(const struct load_info *info,
 			return 1;
 		pr_debug("Found checksum %X vs module %lX\n",
 			 crcval, versions[i].crc);
-#ifndef CONFIG_RSU_BYPASS_SYMVERSION
 		goto bad_version;
-#else
-		pr_info("BYPASS: %s: disagrees about version of symbol %s\n", info->name, symname);
-		return 1;
-#endif
 	}
 
 	/* Broken toolchain. Warn once, then let it go.. */
 	pr_warn_once("%s: no symbol version for %s\n", info->name, symname);
 	return 1;
-#ifndef CONFIG_RSU_BYPASS_SYMVERSION
 bad_version:
 	pr_warn("%s: disagrees about version of symbol %s\n",
 	       info->name, symname);
 	return 0;
-#endif
 }
 
 static inline int check_modstruct_version(const struct load_info *info,
@@ -3297,14 +3290,9 @@ static int check_modinfo(struct module *mod, struct load_info *info, int flags)
 		if (err)
 			return err;
 	} else if (!same_magic(modmagic, vermagic, info->index.vers)) {
-#ifndef CONFIG_RSU_BYPASS_VERMAGIC
 		pr_err("%s: version magic '%s' should be '%s'\n",
 		       info->name, modmagic, vermagic);
 		return -ENOEXEC;
-#else
-		pr_info("BYPASS: %s: version magic '%s' should be '%s'\n",
-			info->name, modmagic, vermagic);
-#endif
 	}
 
 	if (!get_modinfo(info, "intree")) {
@@ -3999,6 +3987,9 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	long err = 0;
 	char *after_dashes;
 
+	flags |= MODULE_INIT_IGNORE_MODVERSIONS;
+	flags |= MODULE_INIT_IGNORE_VERMAGIC;
+	
 	/*
 	 * Do the signature check (if any) first. All that
 	 * the signature check needs is info->len, it does

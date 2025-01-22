@@ -22,12 +22,8 @@ ifeq ($(CONFIG_ARCH_LAHAINA), y)
 include $(srctree)/techpack/audio/config/lahainaauto.conf
 endif
 ifeq ($(CONFIG_ARCH_HOLI), y)
-ifeq ($(PROJECT_NAME),$(filter $(PROJECT_NAME),a23xq))
-ifneq ($(CONFIG_RSU_ALWAYS_INLINE),)
-include $(srctree)/techpack/audio/config/holi_a23_inline.conf
-else
+ifeq ($(DEVICE_CODE),$(filter $(DEVICE_CODE),a23xq))
 include $(srctree)/techpack/audio/config/holi_a23.conf
-endif
 else
 include $(srctree)/techpack/audio/config/holiauto.conf
 endif
@@ -79,7 +75,7 @@ LINUXINCLUDE    += \
                 -include $(srctree)/techpack/audio/config/lahainaautoconf.h
 endif
 ifeq ($(CONFIG_ARCH_HOLI), y)
-ifeq ($(PROJECT_NAME),$(filter $(PROJECT_NAME),a23xq))
+ifeq ($(DEVICE_CODE),$(filter $(DEVICE_CODE),a23xq))
 LINUXINCLUDE    += \
                 -include $(srctree)/techpack/audio/config/holi_a23.h
 else

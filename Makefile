@@ -5,6 +5,10 @@ SUBLEVEL = 254
 EXTRAVERSION =
 NAME = Kleptomaniac Octopus
 
+# Rissu: DO NOT REMOVE THIS !!
+# Some techpack driver is rely on this !!
+export DEVICE_CODE := a23xq
+
 # indicate that change "Kbuild: Support nested composite objects" is
 # present in the kernel so that out-of-tree modules can act upon it
 export KERNEL_SUPPORTS_NESTED_COMPOSITES := y
@@ -768,6 +772,21 @@ ifdef CONFIG_READABLE_ASM
 KBUILD_CFLAGS += $(call cc-option,-fno-reorder-blocks,) \
                  $(call cc-option,-fno-ipa-cp-clone,) \
                  $(call cc-option,-fno-partial-inlining)
+endif
+
+ifdef CONFIG_LLVM_POLLY
+KBUILD_CFLAGS	+= -mllvm -polly \
+		   -mllvm -polly-ast-use-context \
+		   -mllvm -polly-invariant-load-hoisting \
+		   -mllvm -polly-run-inliner \
+		   -mllvm -polly-vectorizer=stripmine
+# Polly may optimise loops with dead paths beyound what the linker
+# # can understand. This may negate the effect of the linker's DCE
+# # so we tell Polly to perfom proven DCE on the loops it optimises
+# # in order to preserve the overall effect of the linker's DCE.
+ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
+KBUILD_CFLAGS	+= -mllvm -polly-run-dce
+endif
 endif
 
 ifneq ($(CONFIG_FRAME_WARN),0)
