@@ -264,24 +264,24 @@ post_build() {
 			post_build_clean;
 		fi
 		cd ..
-		pr_err "Build done. Thanks for using this build script :)"
+	
+		# LKM strip start!
+		mkdir ../kernel_obj_tmp && mkdir kernel_obj
+		find $(pwd) -type f -name "*.ko" -exec mv {} ../kernel_obj_tmp \;
+		TMP_MODLIST=$(find ../kernel_obj_tmp -type f -name "*.ko")
+		
+		# Start stripping
+		for file in $TMP_MODLIST; do
+		  pr_info "Stripping `basename $file`"
+		  strip "$file"
+		done
+		mv ../kernel_obj_tmp/*.ko $(pwd)/kernel_obj/
+		
+		LKM_FMT="LKM-`echo $DEVICE`_$GITSHA-$DATE"
+		tar -czf `echo $LKM_FMT`.tar.gz kernel_obj/*
+		rm -rf kernel_obj ../kernel_obj_tmp
 	fi
-	
-	# LKM strip start!
-	mkdir ../kernel_obj_tmp && mkdir kernel_obj
-        find $(pwd) -type f -name "*.ko" -exec mv {} ../kernel_obj_tmp \;
-	TMP_MODLIST=$(find ../kernel_obj_tmp -type f -name "*.ko")
-	
-        # Start stripping
-        for file in $TMP_MODLIST; do
-          pr_info "Stripping `basename $file`"
-          strip "$file"
-        done
-        mv ../kernel_obj_tmp/*.ko $(pwd)/kernel_obj/
-        
-        LKM_FMT="LKM-`echo $DEVICE`_$GITSHA-$DATE"
-	tar -czf `echo $LKM_FMT`.tar.gz kernel_obj/*
-	rm -rf kernel_obj ../kernel_obj_tmp
+		pr_err "Build done. Thanks for using this build script :)"
 }
 
 handle_lto() {
