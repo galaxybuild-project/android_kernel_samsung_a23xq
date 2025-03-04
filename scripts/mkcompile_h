@@ -77,7 +77,7 @@ UTS_TRUNCATE="cut -b -$UTS_LEN"
 
   LD_VERSION=$($LD -v | head -n1 | sed 's/(compatible with [^)]*)//' \
 		      | sed 's/[[:space:]]*$//')
-  RSU="rsuntkOrgs/Galaxybuild-project (a23xq, sm6375/holi; buildStampId: `date +'%Y%m%d%H%M%S'`)"
+  RSU="rsuntkOrgs (a23xq, sm6375/holi; buildStampId: `date +'%Y%m%d%H%M%S'`)"
   printf '#define LINUX_COMPILER "%s"\n' "$CC_VERSION, $LD_VERSION, $RSU"
 } > .tmpcompile
 

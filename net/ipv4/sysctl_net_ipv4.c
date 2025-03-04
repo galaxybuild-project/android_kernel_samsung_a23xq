@@ -55,6 +55,9 @@ static int tcp_delack_seg_max = 60;
 static int tcp_use_userconfig_min;
 static int tcp_use_userconfig_max = 1;
 
+extern int tcp_proc_delayed_ack_control(struct ctl_table *table, int write, void *buffer, size_t *lenp, loff_t *ppos);
+extern int tcp_use_userconfig_sysctl_handler(struct ctl_table *table, int write, void *buffer, size_t *lenp, loff_t *ppos);
+
 /* obsolete */
 static int sysctl_tcp_low_latency __read_mostly;
 
