@@ -14,8 +14,9 @@ export DEVICE_ID="A23 5G"
 export PROJECT_VERSION="0.8"
 export LLVM=1
 export LLVM_IAS=1
-export KERNELSU=true
-export SUSFS4KSU=true
+export KERNELSU=false
+export SUSFS4KSU=false
+# export HOSTCC=gcc HOSTCXX=g++ HOSTLD=ld HOSTAR=ar
         
 bash $(pwd)/build.sh kernel --jobs $(nproc --all) `echo $DEFCONFIG`
         
